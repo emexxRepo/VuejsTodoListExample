@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="app.js"></script>
+    <style>
+        header {
+            width: 100%;
+            margin: auto;
+            background: #00a2ed;
+            color: #fff0ff;
+            font-size: 50px;
+            height: 50px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        #left-bar {
+            width: 10%;
+            height: auto;
+            background: #00a2cd;
+            float: left;
+        }
+
+        #left-bar ul {
+            padding: 10px;
+            list-style-type: none;
+        }
+
+        #right-bar {
+            float: left;
+            width: 90%;
+            height: auto;
+            background: #00a2cd;
+        }
+
+        #right-bar ul {
+            padding: 20px;
+            color: #fff0ff;
+        }
+
+        #right-bar ul li a{
+            color:#000000;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    todolist
+</header>
+<div id="app">
+    <div id="left-bar">
+
+        <!-- Tüm kategorileri for döngüsü ile gösteriyoruz -->
+        <ul v-for="(list,index) in lists">
+            <li>
+                <a @click="tabbed(list.name)">
+                    {{ list.name }}
+                </a>
+            </li>
+        </ul>
+        <!-- Yeni kategori oluşturduğumuz input eğer enter tuşuna basar isek listeye ekler-->
+        <input type="text" placeholder="new list name" v-model="activeList" v-on:keyup.enter="saveList">
+    </div>
+    <div id="right-bar">
+        <div id="top">
+            <h3>To do</h3>
+            <input type="text" v-on:keyup.enter="addList" v-model="activeData" placeholder="add Something to do">
+            <p v-if="todoList.length === 0">No more work Done..</p>
+            <ul>
+                <li v-for="(item, index) in todoList">
+
+                    <!-- görevlerin yapılp yapılmadığını kontrol ettiğimi checkbox -->
+                    <input type="checkbox" v-model="item.Status">
+                    {{ item.Title }}
+
+                    <!-- DeleteMethoduna item'ın id sini gönderiyıruz -->
+                    <a  @click="deleteDataList(item.Id)">!Delete</a>
+                </li>
+            </ul>
+
+        </div>
+        <hr>
+        <div id="under">
+            <h3>Completed</h3>
+            <!-- eğer yapılacak iş yoksa alttaki mesajı gönderiyoruz -->
+            <p v-if="todoListFinished.length === 0">
+                No work to do
+            </p>
+            <!-- yapılmış işleri gösteriyoruz -->
+            <ul>
+                <li v-for="(item, index) in todoListFinished ">
+                    <input type="checkbox" v-model="item.Status">
+                    {{ item.Title }}
+                </li>
+            </ul>
+        </div>
+
+
+    </div>
+
+</div>
+</body>
+</html>
